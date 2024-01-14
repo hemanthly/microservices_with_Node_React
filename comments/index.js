@@ -19,15 +19,15 @@ app.get('/posts/:id/comments', (req, res)=>{
 
 //create or push the comments for the given post Id.
 app.post('/posts/:id/comments', async (req, res)=>{
-    const commentId = randomBytes(4).toString('hex');
+    const commentId = randomBytes(4).toString('hex'); 
 
     const { content } = req.body; 
 
-    const comments = commentsByPostId[req.params.id] || [];
+    const comments = commentsByPostId[req.params.id] || []; 
 
-    comments.push({id: commentId, content});
+    comments.push({id: commentId, content}); 
     commentsByPostId[req.params.id] = comments;
-    console.log("comment request received.");
+    console.log("comment request received."); 
     await axios.post('http://localhost:4005/events', {
         type: 'CommentCreated',
         data: {
