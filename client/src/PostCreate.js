@@ -14,7 +14,7 @@ const PostCreate = () => {
                 // Handle the response data here
             })
             .catch(error => {
-                console.error('Error from API:', error);
+                console.error('Error from POST CREATE API:', error);
                 // Handle the error here
             });
     };

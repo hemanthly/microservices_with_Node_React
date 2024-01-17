@@ -4,10 +4,14 @@ const axios = require('axios');
 
 const app = express();
 
+const events = [];
+
 app.use(bodyParser.json());
 
 app.post('/events', async (req, res) => {
     const event = req.body;
+
+    events.push(event);
 
     console.log("some event received at the EVENT-BUS.");
     //echo incoming event to POSTS service
@@ -34,10 +38,23 @@ app.post('/events', async (req, res) => {
     }).catch((err) => {
         console.log(err);
     });
-
+    //echo incoming event to MODERATION service
+    await axios.post('http://localhost:4003/events', event)
+    .then((response)=>{
+        console.log('sent incoming event to MODERATION service from event-bus');
+    })
+    .catch((err)=>{
+        console.log(err);
+    });
+    
     res.send({ status: 'OK'});
+});
+
+//sends all the events that has occurred over time.
+app.get('/events', (req, res)=>{
+    res.send(events);
 });
 
 app.listen(4005, () => {
     console.log('Event-bus Listening on 4005');
-})
+});
